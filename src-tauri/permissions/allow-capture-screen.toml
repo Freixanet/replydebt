@@ -1,0 +1,4 @@
+[[permission]]
+identifier = "allow-capture-screen"
+description = "Allows capture_screen for one-shot macOS screen capture."
+commands.allow = ["capture_screen"]

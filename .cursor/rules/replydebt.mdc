@@ -1,0 +1,23 @@
+---
+description: ReplyDebt — principios, límites y forma de trabajar
+alwaysApply: true
+---
+
+# ReplyDebt
+
+You are building ReplyDebt, a local-first personal inbox debt tracker.
+
+## Core principles
+
+- Build small, working increments.
+- Do not rewrite unrelated files.
+- Inspect existing files before editing.
+- Prefer simple, boring architecture.
+- No auth unless explicitly requested.
+- No payments unless explicitly requested.
+- No message sending.
+- No message generation.
+- No scraping private APIs.
+- The app only detects likely pending replies from screenshots.
+- Local-first and privacy-first.
+- After every change, explain exactly how to test it manually.

@@ -1,0 +1,46 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
+  "productName": "ReplyDebt",
+  "version": "0.1.0",
+  "identifier": "com.replydebt.app",
+  "build": {
+    "frontendDist": "../out",
+    "devUrl": "http://localhost:3000",
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build:standalone"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "ReplyDebt",
+        "width": 960,
+        "height": 720,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "resources": [
+      "standalone/**/*"
+    ],
+    "macOS": {
+      "infoPlist": {
+        "NSScreenCaptureUsageDescription": "ReplyDebt captures your screen only when you click Capture Current Screen, to analyze a messaging inbox screenshot."
+      }
+    }
+  }
+}
