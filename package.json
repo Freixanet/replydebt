@@ -10,6 +10,8 @@
     "dev:desktop": "tauri dev",
     "build": "next build",
     "build:pages": "node scripts/build-github-pages.mjs",
+    "build:extension": "npm run build --prefix extension",
+    "dev:extension": "npm run dev --prefix extension",
     "build:standalone": "node scripts/prepare-standalone.mjs",
     "build:desktop": "tauri build",
     "start": "next start",

@@ -1,0 +1,27 @@
+{
+  "name": "replydebt-extension",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "open": "bash scripts/open-chrome.sh",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "devDependencies": {
+    "@crxjs/vite-plugin": "^2.3.0",
+    "@tailwindcss/postcss": "^4",
+    "@types/chrome": "^0.0.304",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^4.7.0",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vite": "^6.4.1"
+  }
+}
