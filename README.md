@@ -51,6 +51,26 @@ If you previously ran `npm run build:desktop`, delete the heavy standalone copy 
 
 If Next.js warns about multiple lockfiles and picks your home folder as the workspace root, remove any stray `~/package-lock.json` (not part of this project). `next.config.ts` pins the project root so the watcher does not scan your entire home directory.
 
+## GitHub Pages demo
+
+Live demo: [https://freixanet.github.io/replydebt/](https://freixanet.github.io/replydebt/)
+
+GitHub Pages serves static files only, so the hosted demo runs in **browser-only mode**:
+
+- Mock screenshot analysis (no Gemini API key on the server)
+- Data stored in `localStorage` in your browser
+- Full UI: dashboard, onboarding, priority contacts, guided scan
+
+For live Gemini analysis and SQLite storage, run locally with `npm run dev` or use the desktop app.
+
+Deploys automatically from `main` via GitHub Actions (`.github/workflows/deploy-pages.yml`). Build locally with:
+
+```bash
+npm run build:pages
+```
+
+Output goes to `out/`. In the repo settings, set **Pages → Build and deployment → Source** to **GitHub Actions** if it is not already.
+
 ## Desktop app (Tauri)
 
 ReplyDebt can run as a native macOS app. The desktop build wraps the same Next.js app: in dev it connects to `next dev`; in production it bundles a local Next.js standalone server + Node runtime.

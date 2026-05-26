@@ -5,15 +5,13 @@ import {
 } from "@google/generative-ai";
 
 import { getAnalyzeMode } from "./analyze-config";
-import { classifyAndFilterItems } from "./classify-items";
 import { getMockRawModelOutput } from "./fixtures/mock-analysis";
-import { parseModelOutput } from "./parse-model-output";
-import { buildAnalysisPrompt } from "./prompts/index";
-import {
-  applyPriorityBoost,
-  matchPriorityContact,
-} from "./priority-contacts";
 import { listPriorityContacts } from "./db/priority-contact-queries";
+import {
+  buildFailedResult,
+  processRawAnalysis,
+} from "./process-raw-analysis";
+import { buildAnalysisPrompt } from "./prompts/index";
 import { type AnalysisResult, type SourceApp } from "./types";
 
 const MODEL_NAME = "gemini-2.5-flash";
@@ -56,61 +54,11 @@ const responseSchema: ResponseSchema = {
   required: ["items"],
 };
 
-export function buildFailedResult(
-  sourceApp: SourceApp,
-  rawModelOutput: string,
-  warnings: string[],
-): AnalysisResult {
-  return {
-    sourceApp,
-    items: [],
-    analyzedAt: new Date().toISOString(),
-    rawModelOutput,
-    warnings,
-    parseStatus: "failed",
-  };
-}
-
 export function analyzeFromRawText(
   rawText: string,
   sourceApp: SourceApp,
 ): AnalysisResult {
-  if (!rawText.trim()) {
-    return buildFailedResult(sourceApp, rawText, [
-      "The model response was empty.",
-    ]);
-  }
-
-  const parsed = parseModelOutput(rawText, sourceApp);
-  const priorityContacts = listPriorityContacts();
-  const classified = classifyAndFilterItems(
-    parsed.rawItems,
-    sourceApp,
-    priorityContacts,
-  );
-  const warnings = [...parsed.warnings, ...classified.warnings];
-
-  const boostedItems = classified.items.map((item) => {
-    const match = matchPriorityContact(
-      item.contactName,
-      sourceApp,
-      priorityContacts,
-    );
-    return match ? applyPriorityBoost(item, match) : item;
-  });
-
-  if (parsed.status === "failed") {
-    return buildFailedResult(sourceApp, parsed.rawText, warnings);
-  }
-
-  return {
-    sourceApp,
-    items: boostedItems,
-    analyzedAt: new Date().toISOString(),
-    rawModelOutput: parsed.rawText,
-    warnings: warnings.length > 0 ? warnings : undefined,
-    parseStatus: parsed.status,
-  };
+  return processRawAnalysis(rawText, sourceApp, listPriorityContacts());
 }
 
 export async function analyzeScreenshot(

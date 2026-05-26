@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { StaticHostingBanner } from "@/components/shell/StaticHostingBanner";
 import {
   DASHBOARD_TABS,
   getTabCount,
@@ -93,6 +94,7 @@ export function AppShell({
           </DropdownMenu>
         </div>
       </header>
+      <StaticHostingBanner />
       <main className="mx-auto max-w-[880px]">{children}</main>
     </div>
   );

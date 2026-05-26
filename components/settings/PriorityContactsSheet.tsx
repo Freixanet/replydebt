@@ -16,6 +16,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
+import { appFetch } from "@/lib/app-fetch";
 import { SOURCE_APP_LABELS, type PriorityContact } from "@/lib/types";
 
 interface PriorityContactsSheetProps {
@@ -60,7 +61,7 @@ export function PriorityContactsSheet({
 
   async function handleSaveNew() {
     setLocalError(null);
-    const response = await fetch("/api/priority-contacts", {
+    const response = await appFetch("/api/priority-contacts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ contact: draft }),
@@ -80,7 +81,7 @@ export function PriorityContactsSheet({
     if (!editingId) return;
     setLocalError(null);
 
-    const response = await fetch(`/api/priority-contacts/${editingId}`, {
+    const response = await appFetch(`/api/priority-contacts/${editingId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(draft),
@@ -99,7 +100,7 @@ export function PriorityContactsSheet({
 
   async function handleDelete(id: string) {
     setLocalError(null);
-    const response = await fetch(`/api/priority-contacts/${id}`, {
+    const response = await appFetch(`/api/priority-contacts/${id}`, {
       method: "DELETE",
     });
 

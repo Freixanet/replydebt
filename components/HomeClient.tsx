@@ -11,6 +11,7 @@ import { PriorityContactsSheet } from "@/components/settings/PriorityContactsShe
 import { AppShell } from "@/components/shell/AppShell";
 import { UploadSheet } from "@/components/upload/UploadSheet";
 import { Button } from "@/components/ui/button";
+import { appFetch } from "@/lib/app-fetch";
 import { getGuidedScanInstructions } from "@/lib/guided-scan";
 import {
   captureCurrentScreen,
@@ -48,7 +49,7 @@ async function patchGuidedScan(
   action: "skip" | "mark_scanned" | "set_current_app",
   app: SourceApp,
 ): Promise<GuidedScanSession> {
-  const response = await fetch("/api/guided-scan", {
+  const response = await appFetch("/api/guided-scan", {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ sessionId, action, app }),
@@ -107,7 +108,7 @@ export default function HomeClient() {
   const mockMode = devConfig?.analyzeMode === "mock";
 
   async function loadDashboardData(): Promise<DashboardData> {
-    const response = await fetch("/api/dashboard");
+    const response = await appFetch("/api/dashboard");
     if (!response.ok) {
       throw new Error("Failed to load dashboard.");
     }
@@ -121,7 +122,7 @@ export default function HomeClient() {
   }, []);
 
   const loadGuidedSession = useCallback(async () => {
-    const response = await fetch("/api/guided-scan");
+    const response = await appFetch("/api/guided-scan");
     if (!response.ok) return null;
 
     const data = (await response.json()) as { session: GuidedScanSession | null };
@@ -161,7 +162,7 @@ export default function HomeClient() {
   useEffect(() => {
     let cancelled = false;
 
-    fetch("/api/dev-config")
+    appFetch("/api/dev-config")
       .then((response) => {
         if (!response.ok) return null;
         return response.json() as Promise<DevConfig>;
@@ -261,7 +262,7 @@ export default function HomeClient() {
     setGuidedError(null);
     setGuidedWarnings([]);
 
-    const response = await fetch("/api/guided-scan", {
+    const response = await appFetch("/api/guided-scan", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ restart }),
@@ -384,7 +385,7 @@ export default function HomeClient() {
         formData.append("screenshot", guidedScreenshot);
       }
 
-      const response = await fetch("/api/analyze", {
+      const response = await appFetch("/api/analyze", {
         method: "POST",
         body: formData,
       });
@@ -453,7 +454,7 @@ export default function HomeClient() {
         formData.append("rawModelOutput", pastedJson.trim());
       }
 
-      const response = await fetch("/api/analyze", {
+      const response = await appFetch("/api/analyze", {
         method: "POST",
         body: formData,
       });
@@ -508,7 +509,7 @@ export default function HomeClient() {
     setError(null);
 
     try {
-      const response = await fetch(`/api/items/${itemId}`, {
+      const response = await appFetch(`/api/items/${itemId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action, priority: options?.priority }),
@@ -533,7 +534,7 @@ export default function HomeClient() {
 
     try {
       if (contacts.length > 0) {
-        const response = await fetch("/api/priority-contacts", {
+        const response = await appFetch("/api/priority-contacts", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ contacts }),
@@ -545,7 +546,7 @@ export default function HomeClient() {
         }
       }
 
-      const onboardingResponse = await fetch("/api/onboarding", {
+      const onboardingResponse = await appFetch("/api/onboarding", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "complete" }),
@@ -570,7 +571,7 @@ export default function HomeClient() {
     setOnboardingError(null);
 
     try {
-      const response = await fetch("/api/onboarding", {
+      const response = await appFetch("/api/onboarding", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "skip" }),
